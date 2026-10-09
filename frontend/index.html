@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PoleVision AI</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="header">
+
+        <div class="logo-section">
+
+            <div class="logo-icon">
+                ⚡
+            </div>
+
+            <div>
+
+                <h1>
+                    PoleVision <span>AI</span>
+                </h1>
+
+                <p>
+                    Electric Pole Detection System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="model-badge">
+
+            <span class="status-dot"></span>
+
+            YOLO26n
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- INTRO -->
+
+        <section class="intro">
+
+            <div>
+
+                <p class="eyebrow">
+                    COMPUTER VISION
+                </p>
+
+                <h2>
+                    Detect Electric Poles
+                    <br>
+                    <span>with AI</span>
+                </h2>
+
+                <p class="description">
+
+                    Upload an aerial image and let the
+                    trained YOLO model identify and locate
+                    electric poles automatically.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             UPLOAD CARD
+        ================================================== -->
+
+        <section class="upload-card">
+
+            <div
+                class="drop-zone"
+                id="dropZone"
+            >
+
+                <div class="upload-icon">
+                    ↑
+                </div>
+
+                <h3>
+                    Upload an Image
+                </h3>
+
+                <p>
+                    Drag & drop your image here
+                </p>
+
+                <span>
+                    or
+                </span>
+
+
+                <label
+                    for="imageInput"
+                    class="browse-button"
+                >
+                    Browse Image
+                </label>
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/png,image/jpeg,image/jpg"
+                    hidden
+                >
+
+
+                <p class="file-info">
+                    JPG, JPEG or PNG
+                </p>
+
+            </div>
+
+
+            <!-- IMAGE PREVIEW -->
+
+            <div
+                class="preview-section"
+                id="previewSection"
+                style="display: none;"
+            >
+
+                <div class="preview-header">
+
+                    <div>
+
+                        <p class="small-title">
+                            SELECTED IMAGE
+                        </p>
+
+                        <h3 id="fileName">
+                            image.jpg
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="remove-button"
+                        id="removeButton"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+
+                <div class="preview-container">
+
+                    <img
+                        id="previewImage"
+                        src=""
+                        alt="Selected image"
+                    >
+
+                </div>
+
+
+                <button
+                    class="detect-button"
+                    id="detectButton"
+                >
+
+                    <span>
+                        Detect Poles
+                    </span>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        <section
+            class="loading-section"
+            id="loadingSection"
+            style="display: none;"
+        >
+
+            <div class="loader"></div>
+
+            <h3>
+                Analyzing Image...
+            </h3>
+
+            <p>
+                YOLO26 is detecting electric poles
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             RESULTS
+        ================================================== -->
+
+        <section
+            class="results-section"
+            id="resultsSection"
+            style="display: none;"
+        >
+
+            <div class="results-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        ANALYSIS COMPLETE
+                    </p>
+
+                    <h2>
+                        Detection Results
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="new-button"
+                    id="newButton"
+                >
+                    + New Image
+                </button>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <p>
+                        TOTAL POLES
+                    </p>
+
+                    <h3 id="totalCount">
+                        0
+                    </h3>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <p>
+                        ELECTRIC POLES
+                    </p>
+
+                    <h3 id="electricCount">
+                        0
+                    </h3>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <p>
+                        11 KV POLES
+                    </p>
+
+                    <h3 id="kvCount">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESULT IMAGES -->
+
+            <div class="images-grid">
+
+
+                <!-- ORIGINAL -->
+
+                <div class="image-card">
+
+                    <div class="image-card-header">
+
+                        <div>
+
+                            <p>
+                                ORIGINAL
+                            </p>
+
+                            <h3>
+                                Input Image
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-image-container">
+
+                        <img
+                            id="originalResult"
+                            src=""
+                            alt="Original image"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- DETECTION -->
+
+                <div class="image-card">
+
+                    <div class="image-card-header">
+
+                        <div>
+
+                            <p>
+                                AI DETECTION
+                            </p>
+
+                            <h3>
+                                Detected Poles
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-image-container">
+
+                        <img
+                            id="resultImage"
+                            src=""
+                            alt="Detection result"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DETECTION LIST -->
+
+            <div class="detections-card">
+
+                <div class="detections-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            DETECTIONS
+                        </p>
+
+                        <h2>
+                            Identified Objects
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="detectionList"
+                    class="detection-list"
+                >
+
+                </div>
+
+            </div>
+
+
+            <!-- DOWNLOAD -->
+
+            <div class="download-section">
+
+                <button
+                    class="download-button"
+                    id="downloadButton"
+                >
+
+                    ↓ Download Detection Result
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ERROR
+        ================================================== -->
+
+        <div
+            class="error-message"
+            id="errorMessage"
+            style="display: none;"
+        >
+
+            <strong>
+                Something went wrong
+            </strong>
+
+            <p id="errorText">
+                Please try again.
+            </p>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <p>
+            PoleVision AI
+            <span>•</span>
+            YOLO26 Object Detection
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
